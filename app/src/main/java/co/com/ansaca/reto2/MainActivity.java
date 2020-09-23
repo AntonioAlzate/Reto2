@@ -24,16 +24,14 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.txtSearch)
     public SearchView txtSearch;
 
-    List<Animal> listaAnimales = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        loadData();
+        //loadData();
 
-        final AnimalAdapter adapter = new AnimalAdapter(this, listaAnimales);
+        final AnimalAdapter adapter = new AnimalAdapter(this, getData());
         listViewAnimales.setAdapter(adapter);
 
         txtSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -49,22 +47,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        listViewAnimales.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Animal animalSeleccionado = (Animal) listViewAnimales.getItemAtPosition(i);
-                MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), animalSeleccionado.getSonido());
-                mediaPlayer.start();
-            }
+        listViewAnimales.setOnItemClickListener((adapterView, view, i, l) -> {
+            Animal animalSeleccionado = (Animal) listViewAnimales.getItemAtPosition(i);
+            MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), animalSeleccionado.getSonido());
+            mediaPlayer.start();
         });
     }
 
-    public void loadData(){
+    public List<Animal> getData(){
+        List<Animal> listaAnimales = new ArrayList<>();
 
         listaAnimales.add(new Animal(R.drawable.gato, "Gato", "Es un felino domesticado por el hombre desde el año 7500 a.c", R.raw.gato));
         listaAnimales.add(new Animal(R.drawable.leon, "Leon", "Es un mamimero, carniboro de la familia de los felidos conocido como el rey de la selva",R.raw.leon));
         listaAnimales.add(new Animal(R.drawable.perro, "Perro", "Los perros surgieron en Europa hace mas de 18000 años a partir de los lobos domesticados por los humanos",R.raw.perro));
         listaAnimales.add(new Animal(R.drawable.ave, "Canario", "Es un pajaro domestico criado como animal de compania más abundante del mundo", R.raw.pajaro));
+
+        return listaAnimales;
     }
 
 }
